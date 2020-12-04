@@ -42,16 +42,8 @@ const validOnly = arr.filter(isValid);
 
 console.log(validOnly.length);
 
-const trueValid = validOnly.filter(pp => {
-	for (const key in pp) {
-		const val = pp[key];
-		if (validation[key](val)) {
-			continue;
-		} else {
-			return false;
-		}
-	}
-	return true;
-});
+const trueValid = validOnly.filter((pp) =>
+	Object.entries(pp).every(([key, val]) => validation[key](val))
+);
 
 console.log(trueValid.length);
