@@ -1,10 +1,5 @@
 const input = require('./input.json');
 
-const plane = [];
-for (let i = 0; i <= 127; i++) {
-	plane[i] = [0, 0, 0, 0, 0, 0, 0, 0];
-}
-
 const getSeatId = ([row, col]) => row * 8 + col;
 
 const parseRowOrCol = (range, rowOrColStr) => {
