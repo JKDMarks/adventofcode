@@ -13,13 +13,7 @@ const validation = {
 
 const isValid = (pp) => {
 	const keys = Object.keys(pp);
-	if (keys.length < 7) {
-		return false;
-	} else if (keys.length === 7 && keys.includes('cid')) {
-		return false;
-	} else {
-		return true;
-	}
+	return keys.length < 7 || (keys.length === 7 && keys.includes('cid')) ? false : true;
 };
 
 const validOnly = arr.filter(isValid);
