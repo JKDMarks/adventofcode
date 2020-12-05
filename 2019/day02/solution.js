@@ -19,7 +19,7 @@ const runProgram = (p1, p2) => {
 	return arr[0];
 };
 
-console.log(runProgram(12, 2));
+console.log(runProgram(12, 2)); // 3850704
 
 const target = 19690720;
 
@@ -31,7 +31,7 @@ for (let x = 0; x <= 100; x++) {
 		// 	console.log(x, y, output, output / target);
 		// }
 		if (output === target) {
-			console.log(x, y, output);
+			console.log(x, y, output); // 67 18 19690720
 			console.log(100 * x + y);
 		}
 	}
