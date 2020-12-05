@@ -1,30 +1,6 @@
 const wires = require('./input.json');
 const [wire1, wire2] = wires;
 
-// const findDims = (wire) => {
-// 	let [height, width] = [0, 0];
-// 	let [maxU, maxD, maxR, maxL] = [0, 0, 0, 0];
-// 	wire.forEach((mvmt) => {
-// 		const dir = mvmt[0];
-// 		const dist = Number(mvmt.slice(1));
-// 		if (dir === 'U') {
-// 			height += dist;
-// 			maxU = Math.max(maxU, height);
-// 		} else if (dir === 'D') {
-// 			height -= dist;
-// 			maxD = Math.min(maxD, height);
-// 		} else if (dir === 'R') {
-// 			width += dist;
-// 			maxR = Math.max(maxR, width);
-// 		} else if (dir === 'L') {
-// 			width -= dist;
-// 			maxL = Math.min(maxL, width);
-// 		}
-// 	});
-// 	console.log(maxU, maxD, maxR, maxL);
-// 	return [height, width];
-// };
-
 const traceWires = () => {
 	const visited1 = {
 		// '0,0': true,
@@ -71,8 +47,6 @@ const traceWires = () => {
 
 	return intersections;
 };
-
-// traceWires();
 
 const findClosestIntersection = () => {
 	const intersections1 = traceWires().reduce(
