@@ -13,6 +13,7 @@ const traceWires = () => {
 		const dir = mvmt[0];
 		const dist = Number(mvmt.slice(1));
 		for (let i = 0; i < dist; i++) {
+			// Move 1 space at a time
 			if (dir === 'U') {
 				currPos[1]++;
 			} else if (dir === 'D') {
@@ -23,6 +24,7 @@ const traceWires = () => {
 				currPos[0]--;
 			}
 
+			// See if wire1 and wire2 overlap
 			const posStr = currPos.join(',');
 			if (wireNum === 1) {
 				visited1[posStr] = true;
@@ -33,13 +35,14 @@ const traceWires = () => {
 	};
 
 	wire1.forEach((mvmt) => move(mvmt, 1));
-	currPos = [0, 0];
+	currPos = [0, 0]; // Reset wire pos to [0,0] between wires!
 	wire2.forEach((mvmt) => move(mvmt, 2));
 
 	console.log('intersections', intersections);
 
 	let closest = Number.MAX_SAFE_INTEGER;
 	intersections.forEach((intArr) => {
+		// Abs val b/c wire can have negative pos
 		const dist = Math.abs(intArr[0]) + Math.abs(intArr[1]);
 		closest = Math.min(closest, dist);
 	});
@@ -49,6 +52,11 @@ const traceWires = () => {
 };
 
 const findClosestIntersection = () => {
+	// Same format as `visited`
+	// {
+	//     '-1305,-901': true,
+	//     '-1527,-957': true,
+	// }
 	const intersections1 = traceWires().reduce(
 		(acc, cur) => ({ ...acc, [cur.join(',')]: true }),
 		{}
@@ -72,6 +80,7 @@ const findClosestIntersection = () => {
 				currPos[0]--;
 			}
 
+			// Only overwrite `true` with moveCt (i.e. only use first moveCt)
 			const posStr = currPos.join(',');
 			if (wireNum === 1 && intersections1[posStr] === true) {
 				intersections1[posStr] = moveCt;
