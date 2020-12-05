@@ -2,8 +2,8 @@ import json
 import math
 from pdb import set_trace as db
 
-with open("./input.json") as input:
-    arr = json.loads(input.read())
+with open("input.json") as f:
+    arr = json.load(f)
 
 # 944, 554
 # console.log(getSeatId(findSeat('BFFFBBFRRR'))); // 70, 7, 567
