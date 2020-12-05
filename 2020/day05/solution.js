@@ -7,31 +7,26 @@ for (let i = 0; i <= 127; i++) {
 
 const getSeatId = ([row, col]) => row * 8 + col;
 
+const parseRowOrCol = (range, rowOrColStr) => {
+	rowOrColStr.split('').forEach((ltr) => {
+		const [a, b] = range;
+		const amtToChange = Math.round((b - a) / 2);
+		if (ltr === 'F' || ltr === 'L') {
+			range[1] -= amtToChange;
+		} else if (ltr === 'B' || ltr === 'R') {
+			range[0] += amtToChange;
+		}
+	});
+};
+
 const findSeat = (seat) => {
-	const row = seat.slice(0, 7);
-	const col = seat.slice(7);
+	const rowStr = seat.slice(0, 7);
+	const colStr = seat.slice(7);
 	let rowRange = [0, 127];
 	let colRange = [0, 7];
 
-	row.split('').forEach((ltr) => {
-		const [a, b] = rowRange;
-		const amtToChange = Math.round((b - a) / 2);
-		if (ltr === 'F') {
-			rowRange[1] -= amtToChange;
-		} else if (ltr === 'B') {
-			rowRange[0] += amtToChange;
-		}
-	});
-
-	col.split('').forEach((ltr) => {
-		const [a, b] = colRange;
-		const amtToChange = Math.round((b - a) / 2);
-		if (ltr === 'L') {
-			colRange[1] -= amtToChange;
-		} else if (ltr === 'R') {
-			colRange[0] += amtToChange;
-		}
-	});
+	parseRowOrCol(rowRange, rowStr);
+	parseRowOrCol(colRange, colStr);
 
 	return [rowRange[0], colRange[0]];
 };
