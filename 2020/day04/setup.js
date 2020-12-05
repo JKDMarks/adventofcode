@@ -3,7 +3,7 @@ const fs = require('fs');
 const input = fs.readFileSync('./raw-input.txt', 'utf8');
 
 const arr = input.split('\n\n').map((str) => {
-	const pairs = str.replace(/\n/g, ' ').split(' ');
+	const pairs = str.split(/\n| /);
 	const obj = {};
 	pairs.forEach((pair) => {
 		const [key, val] = pair.split(':');
