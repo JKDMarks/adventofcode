@@ -12,7 +12,7 @@ def count_groups(groups):
         answered = {}
         people = group.split("\n")
         for person in people:
-            ans = [l for l in person]
+            ans = list(person)
             for l in ans:
                 answered[l] = True
         count += len(answered.keys())
@@ -27,12 +27,9 @@ def count_groups_2(groups):
         people = group.split("\n")
         size = len(people)
         for person in people:
-            ans = [l for l in person]
+            ans = list(person)
             for l in ans:
-                if l in answered:
-                    answered[l] += 1
-                else:
-                    answered[l] = 1
+                answered[l] = answered.get(l, 0) + 1
         for (k, v) in answered.items():
             if v == size:
                 count += 1
