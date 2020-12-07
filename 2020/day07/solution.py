@@ -29,7 +29,7 @@ for rule in input:
 
 def count_possible_containers(rules, tgt):
     can_be_contained_by = {}
-    for [containing_color, can_contain_arr] in bag_rules.items():
+    for [containing_color, can_contain_arr] in rules.items():
         for [qty, contained_color] in can_contain_arr:
             if contained_color in can_be_contained_by:
                 can_be_contained_by[contained_color].append(containing_color)
