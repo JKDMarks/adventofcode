@@ -9,16 +9,16 @@ with open("raw-input.txt") as f:
 def parse_bag_str(str):
     str = str.split(" contain ")
     bag_color = str[0].split(" bags")[0]
-    output = [bag_color, []]
+    output = []
 
     if str[1] != "no other bags.":
         contained_bags = str[1].split(", ")
         for bag in contained_bags:
             qty = int(bag[0])
             color_in_bag = re.split(" bag(s)?", bag)[0][2:]
-            output[1].append([qty, color_in_bag])
+            output.append([qty, color_in_bag])
 
-    return output
+    return [bag_color, output]
 
 
 bag_rules = {}
