@@ -3,42 +3,62 @@ from pdb import set_trace as db
 from pprint import pprint as pp
 
 with open("input.json") as f:
-    input = json.load(f)
+    arr = json.load(f)
+
+global output
+output = [0]
 
 
 def run_program(input):
-    output = 0
-    arr = input[:]
-
-    def parse_opcode(unpadded_opcode, a, b, c):
+    def parse_opcode(unpadded_opcode, a, b, c, start_i):
         opcode = ("0" * (5 - len(unpadded_opcode))) + unpadded_opcode
         mode3, mode2, mode1, operation = opcode[0], opcode[1], opcode[2], opcode[3:5]
-        return
+        num_params = 0
+        if operation == "01":
+            num_params = 3
+            arr[c if mode3 == "0" else i + 3] = (arr[a] if mode1 == "0" else a) + (
+                arr[b] if mode2 == "0" else b
+            )
+        elif operation == "02":
+            num_params = 3
+            arr[c if mode3 == "0" else i + 3] = (arr[a] if mode1 == "0" else a) * (
+                arr[b] if mode2 == "0" else b
+            )
+        elif operation == "03":
+            num_params = 1
+            arr[a if mode1 == "0" else i + 1] = input
+        elif operation == "04":
+            num_params = 1
+            output[0] = arr[a if mode1 == "0" else i + 1]
 
-    def handle1(a, b, c):
-        arr[c] = arr[a] + arr[b]
+        return num_params
 
-    def handle2(a, b, c):
-        arr[c] = arr[a] * arr[b]
+    # def handle1(a, b, c):
+    #     arr[c] = arr[a] + arr[b]
+
+    # def handle2(a, b, c):
+    #     arr[c] = arr[a] * arr[b]
 
     i = 0
-    while i <= len(arr):
-        [curr, a, b, c] = arr[i : i + 4]
-        if curr == 1:
-            handle1(a, b, c)
-        elif curr == 2:
-            handle2(a, b, c)
-        elif curr == 99:
+    while i < len(arr):
+        curr = str(arr[i])
+        a, b, c = (
+            [int(n) for n in arr[i + 1 : i + 4]]
+            if i + 4 < len(arr)
+            else [None, None, None]
+        )
+
+        if curr == 99:
             break
-        i += 4
+        else:
+            # print(curr, a, b, c, i)
+            num_params = parse_opcode(curr, a, b, c, i)
+        i += 1 + num_params
 
-    return arr[0]
+    return output
 
 
-for n in input:
-    print(parse_opcode(n))
-
-# print(run_program(12, 2))
+print(run_program(1))
 
 # target = 19690720
 
