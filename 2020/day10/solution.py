@@ -70,8 +70,8 @@ def count_jolt_diffs(input):
             next = input[i + 1]
             diff_ct_dict[next - n] += 1
 
-    print(diff_ct_dict[1] * diff_ct_dict[3])
-    return diff_ct_dict
+    print(diff_ct_dict)
+    return diff_ct_dict[1] * diff_ct_dict[3]
 
 
 # print(count_jolt_diffs(test_input_1))  # 35
@@ -118,7 +118,6 @@ def is_valid_skip(input, skip):
 
 #     for i in range(len(skippable) + 1):
 #         skip_tuples = list(combinations(skippable, i))
-#         # print(skip_tuples)
 #         for skip in skip_tuples:
 #             if is_valid_skip(input, skip):
 #                 count += 1
@@ -132,13 +131,13 @@ def count_possible_combinations(input):
     for i in range(len(input)):
         for j in range(i + 1, len(input)):
             if input[j] - input[i] > 3:
-                continue
+                break
             else:
                 paths_in[j] += paths_in[i]
 
     return paths_in[-1]
 
 
-print(count_possible_combinations(test_input_1))  # 8
-print(count_possible_combinations(test_input_2))  # 19208
-print(count_possible_combinations(input))  # 86812553324672
+# print(count_possible_combinations(test_input_1))  # 8
+# print(count_possible_combinations(test_input_2))  # 19208
+# print(count_possible_combinations(input))  # 86812553324672
