@@ -5,10 +5,15 @@ import operator as op
 from functools import reduce
 from pdb import set_trace as db
 
-with open("raw-input.txt") as f:
-    input = [0] + sorted([int(n) for n in f.read().split("\n")])
-    input.append(input[-1] + 3)
 
+def sort_nums(nums):
+    sorted_list = [0] + sorted([int(n) for n in nums.split("\n")])
+    sorted_list.append(sorted_list[-1] + 3)
+    return sorted_list
+
+
+with open("raw-input.txt") as f:
+    input = sort_nums(f.read())
 
 test_str_1 = """16
 10
@@ -21,9 +26,7 @@ test_str_1 = """16
 6
 12
 4"""
-test_input_1 = [0] + sorted([int(n) for n in test_str_1.split("\n")])
-test_input_1.append(test_input_1[-1] + 3)
-print(test_input_1)
+test_input_1 = sort_nums(test_str_1)
 
 test_str_2 = """28
 33
@@ -56,9 +59,7 @@ test_str_2 = """28
 34
 10
 3"""
-test_input_2 = [0] + sorted([int(n) for n in test_str_2.split("\n")])
-test_input_2.append(test_input_2[-1] + 3)
-print(test_input_2)
+test_input_2 = sort_nums(test_str_2)
 
 
 def count_jolt_diffs(input):
@@ -81,8 +82,6 @@ def count_jolt_diffs(input):
 # print(count_jolt_diffs(test_input_1))  # 35
 # print(count_jolt_diffs(test_input_2))  # 220
 # print(count_jolt_diffs(input))  # 2059
-
-# def check_next_3(a,b):
 
 
 def find_skippable(input):
@@ -116,21 +115,35 @@ def is_valid_skip(input, skip):
     return True
 
 
+### This works, but good luck getting it to run in a
+### reasonable amount of time on anything except a supercomputer
+# def count_possible_combinations(input):
+#     skippable = find_skippable(input)
+#     count = 0
+
+#     for i in range(len(skippable) + 1):
+#         skip_tuples = list(combinations(skippable, i))
+#         # print(skip_tuples)
+#         for skip in skip_tuples:
+#             if is_valid_skip(input, skip):
+#                 count += 1
+
+#     return count
+
+
 def count_possible_combinations(input):
-    skippable = find_skippable(input)
-    count = 0
+    paths_in = [0] * len(input)
+    paths_in[0] = 1
+    for i in range(len(input)):
+        for j in range(i + 1, len(input)):
+            if input[j] - input[i] > 3:
+                continue
+            else:
+                paths_in[j] += paths_in[i]
 
-    for i in range(len(skippable) + 1):
-        skip_tuples = list(combinations(skippable, i))
-        print(skip_tuples)
-        # print(skip_tuples)
-        for skip in skip_tuples:
-            if is_valid_skip(input, skip):
-                count += 1
-
-    return count
+    return paths_in[-1]
 
 
-# print(count_possible_combinations(test_input_1))
-# print(count_possible_combinations(test_input_2))
-print(count_possible_combinations(input))
+print(count_possible_combinations(test_input_1))  # 8
+print(count_possible_combinations(test_input_2))  # 19208
+print(count_possible_combinations(input))  # 86812553324672
