@@ -1,8 +1,3 @@
-import re
-
-from itertools import combinations
-import operator as op
-from functools import reduce
 from pdb import set_trace as db
 
 
