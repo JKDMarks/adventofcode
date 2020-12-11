@@ -1,4 +1,5 @@
 from pdb import set_trace as db
+from copy import deepcopy
 
 with open("raw-input.txt") as f:
     seats = [list(s) for s in f.read().split("\n")]
@@ -35,7 +36,7 @@ def adj_seats_1(seats, y, x, h, w):
 
 
 def sit_1(seats):
-    copy = [row[:] for row in seats]
+    copy = deepcopy(seats)
     width = len(seats[0])
     height = len(seats)
     for (j, row) in enumerate(seats):
@@ -50,12 +51,11 @@ def sit_1(seats):
 
 
 def count_occupied_1(seats):
-    copy = seats
-    next = sit_1(copy)
-    while copy != next:
-        copy, next = next, sit_1(next)
+    next = sit_1(seats)
+    while seats != next:
+        seats, next = next, sit_1(next)
 
-    return [s for r in copy for s in r].count("#")
+    return [s for r in seats for s in r].count("#")
 
 
 # print(count_occupied_1(test_seats_1))  # 37
@@ -86,7 +86,7 @@ def adj_seats_2(seats, y, x):
 
 
 def sit_2(seats):
-    copy = [row[:] for row in seats]
+    copy = deepcopy(seats)
 
     for (j, row) in enumerate(seats):
         for (i, seat) in enumerate(row):
@@ -100,12 +100,11 @@ def sit_2(seats):
 
 
 def count_occupied_2(seats):
-    copy = [row[:] for row in seats]
-    next = sit_2(copy)
-    while copy != next:
-        copy, next = next, sit_2(next)
+    next = sit_2(seats)
+    while seats != next:
+        seats, next = next, sit_2(next)
 
-    return [s for r in copy for s in r].count("#")
+    return [s for r in seats for s in r].count("#")
 
 
 # print(count_occupied_2(test_seats_1))  # 26
