@@ -28,13 +28,10 @@ def turn_ship(facing, direction, degree):
 
 
 def move(pos, cardinality, spaces):
-    new_pos = pos[:]
-    move_arr = cardinal_dict[cardinality]
+    base_move = cardinal_dict[cardinality]
+    move_arr = [x * spaces for x in base_move]
 
-    for i in range(spaces):
-        new_pos = [x + y for x, y in zip(new_pos, move_arr)]
-
-    return new_pos
+    return [x + y for x, y in zip(pos, move_arr)]
 
 
 def follow_dirs(dirs):
@@ -83,8 +80,8 @@ def true_follow_dirs(dirs):
             waypt_pos = move(waypt_pos, action, num)
 
         elif action == "F":
-            for i in range(num):
-                ship_pos = [x + y for (x, y) in zip(ship_pos, waypt_pos)]
+            move_arr = [x * num for x in waypt_pos]
+            ship_pos = [x + y for (x, y) in zip(ship_pos, move_arr)]
 
         elif action in ["L", "R"]:
             waypt_pos = rotate_wapyt(waypt_pos, action, num)
