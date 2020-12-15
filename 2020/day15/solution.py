@@ -20,6 +20,7 @@ def nth_num_said(input, tgt_num):
     def add_if_exists(prev, turn):
         if prev in last_seen:
             last_seen[prev].insert(0, turn)
+            del last_seen[prev][2:]
         else:
             last_seen[prev] = [turn]
 
@@ -43,4 +44,6 @@ print(nth_num_said(test_input_2, 2020))  # 1
 print(nth_num_said(test_input_3, 2020))  # 1259
 print(nth_num_said(input, 2020))  # 1259
 
-print(nth_num_said(test_input_1, 30000000))
+# print(nth_num_said(test_input_1, 30000000)) # 175594
+print(nth_num_said(input, 30000000)) # 175594
+
