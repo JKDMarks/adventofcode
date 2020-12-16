@@ -94,10 +94,8 @@ def find_positions(input):
     tickets = [[int(n) for n in s.split(",")] for s in nearby_tix[16:].split("\n")]
     pos_dict = {i: [] for i in range(len(ranges))}
 
-    valid_tickets = []
     for ticket in tickets:
         if check_ticket_valid(ticket, ranges):
-            valid_tickets.append(ticket)
             for (i, v) in enumerate(ticket):
                 pos_dict[i].append(v)
 
