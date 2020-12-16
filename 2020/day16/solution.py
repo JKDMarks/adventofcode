@@ -116,10 +116,9 @@ def find_positions(input):
                     name_can_be[k][i] = False
 
     my_ticket = [int(n) for n in my_ticket[13:].split(",")]
-    departures_only = {
-        k: v for (k, v) in name_to_i.items() if k.startswith("departure")
-    }
-    my_departures = [my_ticket[i] for i in departures_only.values()]
+    my_departures = [
+        my_ticket[i] for (name, i) in name_to_i.items() if name.startswith("departure")
+    ]
 
     return reduce(lambda a, b: a * b, my_departures)
 
