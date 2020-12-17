@@ -25,56 +25,134 @@ test_str = """.#.
 test_input = [list(s) for s in test_str.split("\n")]
 
 
-def create_inactive(input):
-    h = len(input)
-    w = len(input[0])
-    return ([["."] * w]) * h
+# def expand_by_one(pos_dict):
+#     expanded = pos_dict.copy()
+
+#     for pos in pos_dict:
+#         x, y, z = [int(n) for n in pos.split(",")]
+#         for nbr in neighbors:
+#             check_pos = ",".join([str(a + b) for (a, b) in zip(nbr, (x, y, z))])
+#             if check_pos not in expanded:
+#                 expanded[check_pos] = "."
+
+#     return expanded
 
 
-def check_pos(input, pos):
-    z,y,x = pos
-    if z not in input:
-        input[z] = create_inactive(input[0])
+# def check_neighbors(pos_dict, pos):
+#     nbr_dict = {".": 0, "#": 0}
+#     x, y, z = [int(n) for n in pos.split(",")]
+#     for nbr in neighbors:
+#         check_pos = ",".join([str(a + b) for (a, b) in zip(nbr, (x, y, z))])
+#         if check_pos not in pos_dict:
+#             nbr_dict["."] += 1
+#         else:
+#             nbr_dict[pos_dict[check_pos]] += 1
 
-    h,w = len(input[z]), len(input[z][0])
-    if 0 <= y < h and 0 <= x < w:
-        return input[z][y][x]
+#     return nbr_dict
 
 
-def check_neighbors(input, z,y,x):
+# def run_one_cycle(pos_dict):
+#     pos_dict = expand_by_one(pos_dict)
+#     next = pos_dict.copy()
+
+#     for (pos, val) in pos_dict.items():
+#         nbrs = check_neighbors(pos_dict, pos)
+#         if val == "#":
+#             if 2 <= nbrs["#"] <= 3:
+#                 next[pos] = "#"
+#             else:
+#                 next[pos] = "."
+#         elif val == ".":
+#             if nbrs["#"] == 3:
+#                 next[pos] = "#"
+#             else:
+#                 next[pos] = "."
+
+#     return next
+
+
+# def count_active(input, cycles):
+#     pos_dict = {}
+#     for j in range(len(input)):
+#         for i in range(len(input[j])):
+#             pos = ",".join((str(i), str(j), "0"))
+#             pos_dict[pos] = input[j][i]
+
+#     while cycles > 0:
+#         pos_dict = run_one_cycle(pos_dict)
+#         cycles -= 1
+
+#     return list(pos_dict.values()).count("#")
+
+
+# print(count_active(test_input, 6))  # 112
+# print(count_active(input, 6))
+
+
+dirs_4d = [[-1, 0, 1]] * 4
+neighbors_4d = list(itertools.product(*dirs_4d))
+neighbors_4d.remove((0, 0, 0, 0))
+
+
+def expand_by_one_4d(pos_dict):
+    expanded = pos_dict.copy()
+
+    for pos in pos_dict:
+        x, y, z, w = [int(n) for n in pos.split(",")]
+        for nbr in neighbors_4d:
+            check_pos = ",".join([str(a + b) for (a, b) in zip(nbr, (x, y, z, w))])
+            if check_pos not in expanded:
+                expanded[check_pos] = "."
+
+    return expanded
+
+
+def check_neighbors_4d(pos_dict, pos):
     nbr_dict = {".": 0, "#": 0}
-
-    for nbr in neighbors:
-        pos = [(a+b) for (a,b) in zip(nbr, (z,y,x))]
-        at_pos = check_pos(input, pos)
-        if at_pos:
-            nbr_dict[at_pos] += 1
+    x, y, z, w = [int(n) for n in pos.split(",")]
+    for nbr in neighbors_4d:
+        check_pos = ",".join([str(a + b) for (a, b) in zip(nbr, (x, y, z, w))])
+        if check_pos not in pos_dict:
+            nbr_dict["."] += 1
         else:
-            nbr_dict['.'] += 1
+            nbr_dict[pos_dict[check_pos]] += 1
 
     return nbr_dict
 
 
-def count_active(input, cycles):
-    input = {-1: create_inactive(input), 0: input, 1: create_inactive(input)}
+def run_one_cycle_4d(pos_dict):
+    pos_dict = expand_by_one_4d(pos_dict)
+    next = pos_dict.copy()
+
+    for (pos, val) in pos_dict.items():
+        nbrs = check_neighbors_4d(pos_dict, pos)
+        if val == "#":
+            if 2 <= nbrs["#"] <= 3:
+                next[pos] = "#"
+            else:
+                next[pos] = "."
+        elif val == ".":
+            if nbrs["#"] == 3:
+                next[pos] = "#"
+            else:
+                next[pos] = "."
+
+    return next
+
+
+def count_active_4d(input, cycles):
+    pos_dict = {}
+    for j in range(len(input)):
+        for i in range(len(input[j])):
+            pos = ",".join((str(i), str(j), "0", "0"))
+            pos_dict[pos] = input[j][i]
 
     while cycles > 0:
-        for k in input:
-            next = deepcopy(input[k])
-            for j in range(len(input[k])):
-                for i in range(len(input[k][j])):
-                    nbrs = check_neighbors(input, k,j,i)
-                    if input[k][j][i] == '#':
-                        next[j][i] = ('#' if (2 <= nbrs['#'] <= 3) else '.')
-                    if input[k][j][i] == '.':
-                        next[j][i] = ('#' if nbrs['#'] == 3 else '.')
-
-            # Left off here
-            db()
+        pos_dict = run_one_cycle_4d(pos_dict)
         cycles -= 1
 
-    return
+    return list(pos_dict.values()).count("#")
 
 
-print(count_active(test_input, 6))  # 112
-# print(count_active(inpt, 6))
+print(count_active_4d(test_input, 6))  # 848
+print(count_active_4d(input, 6))  # 1812
