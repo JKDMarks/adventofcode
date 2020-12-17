@@ -49,6 +49,8 @@ def check_neighbors(input, z,y,x):
         at_pos = check_pos(input, pos)
         if at_pos:
             nbr_dict[at_pos] += 1
+        else:
+            nbr_dict['.'] += 1
 
     return nbr_dict
 
@@ -66,7 +68,7 @@ def count_active(input, cycles):
                         next[j][i] = ('#' if (2 <= nbrs['#'] <= 3) else '.')
                     if input[k][j][i] == '.':
                         next[j][i] = ('#' if nbrs['#'] == 3 else '.')
-                        
+
             # Left off here
             db()
         cycles -= 1
